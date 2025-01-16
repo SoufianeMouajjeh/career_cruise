@@ -20,6 +20,7 @@ export function JobCard({ job }: { job: Job }) {
     job_posted_at,
     job_apply_link,
   } = job
+  console.log(job)
 
   // Placeholder image for missing logos
   const DefaultLogo = () => (
@@ -92,7 +93,7 @@ export function JobCard({ job }: { job: Job }) {
                 <img
                   src={employer_logo}
                   alt={`${employer_name} logo`}
-                  className="h-14 w-14 rounded-xl object-cover ring-2 ring-gray-100"
+                  className="rounded-xl object-cover ring-2 ring-gray-100 w-[56px] h-[56px]"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                     e.currentTarget.parentElement?.querySelector('.default-logo')?.classList.remove('hidden');
