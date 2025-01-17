@@ -5,18 +5,28 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import axios from "axios"
 import { Job } from "@/types"
 import { useEffect, useState } from "react"
+import { Pagination } from '@/components/Pagination'
 
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState('all')
+  const [currentPage, setCurrentPage] = useState(1)
+  const jobsPerPage = 15
+
+  const indexOfLastJob = currentPage * jobsPerPage
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob)
+
+  const totalPages = Math.ceil(jobs.length / jobsPerPage)
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         setIsLoading(true)
         setError(null)
+        setCurrentPage(1)
         
         const response = await axios.request({
           method: 'GET',
@@ -24,7 +34,7 @@ export default function Home() {
           params: {
             query: activeTab === 'all' ? 'developer' : activeTab,
             page: '1',
-            num_pages: '1',
+            num_pages: '20',
             country: 'us',
             date_posted: 'all'
           },
@@ -52,20 +62,20 @@ export default function Home() {
     fetchJobs()
   }, [activeTab])
 
-  const handleSearch = async (query: string, location: string) => {
+  const handleSearch = async (query: string, country: string) => {
     try {
       setIsLoading(true)
       setError(null)
+      setCurrentPage(1)
       
       const response = await axios.request({
         method: 'GET',
         url: 'https://jsearch.p.rapidapi.com/search',
         params: {
           query,
-          location,
+          country,
           page: '1',
           num_pages: '1',
-          country: 'us',
           date_posted: 'all'
         },
         headers: {
@@ -146,12 +156,18 @@ export default function Home() {
           <div className="text-center py-8">No jobs found</div>
         ) : (
           <div className="space-y-6">
-            {jobs.map((job: Job) => (
+            {currentJobs.map((job: Job) => (
               <JobCard key={job.job_id} job={job} />
             ))}
+            <Pagination
+              className="mt-8"
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
+        
         )}
-        {/* Pagination */}
       </section>
     </main>
   )

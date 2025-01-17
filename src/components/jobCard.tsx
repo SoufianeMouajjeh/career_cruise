@@ -89,20 +89,20 @@ export function JobCard({ job }: { job: Job }) {
         <div className="flex items-start justify-between">
           <div className="flex items-start space-x-4">
             <div className="relative">
-            {employer_logo ? (
-                <img
-                  src={employer_logo}
-                  alt={`${employer_name} logo`}
-                  className="rounded-xl object-cover ring-2 ring-gray-100 w-[56px] h-[56px]"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.parentElement?.querySelector('.default-logo')?.classList.remove('hidden');
-                  }}
-                />
-              ) : null}
-              <div className={cn('default-logo', employer_logo ? 'hidden' : '')}>
-                <DefaultLogo />
-              </div>
+              {employer_logo ? (
+                  <img
+                    src={employer_logo}
+                    alt={`${employer_name} logo`}
+                    className="rounded-xl w-14 h-14"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement?.querySelector('.default-logo')?.classList.remove('hidden');
+                    }}
+                  />
+                ) : null}
+                <div className={cn('default-logo', employer_logo ? 'hidden' : '')}>
+                  <DefaultLogo />
+                </div>
             </div>
             <div>
               <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
@@ -153,7 +153,8 @@ export function JobCard({ job }: { job: Job }) {
               employmentType.includes('Full-time') && "bg-blue-50 text-blue-700 hover:bg-blue-100",
               employmentType.includes('Full-time and Part-time') && "bg-green-50 text-green-700 hover:bg-green-100",
               employmentType.includes('Contract') && "bg-purple-50 text-purple-700 hover:bg-purple-100",
-              employmentType.includes('Part-time')&& "bg-orange-50 text-orange-700 hover:bg-orange-100"
+              employmentType.includes('Part-time')&& "bg-orange-50 text-orange-700 hover:bg-orange-100",
+              employmentType.includes('Internship')&& "bg-yellow-50 text-yellow-700 hover:bg-yellow-100",
             )}
           >
             {employmentType}

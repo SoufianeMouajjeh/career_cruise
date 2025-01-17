@@ -6,16 +6,16 @@ import { MapPin, Search } from 'lucide-react'
 import { useState } from 'react'
 
 interface SearchFormProps {
-  onSearch: (query: string, location: string) => void;
+  onSearch: (query: string, country: string) => void;
 }
 
 export function SearchForm({ onSearch }: SearchFormProps) {
   const [query, setQuery] = useState('')
-  const [location, setLocation] = useState('')
+  const [country, setCountry] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSearch(query, location)
+    onSearch(query, country)
   }
 
   return (
@@ -35,8 +35,8 @@ export function SearchForm({ onSearch }: SearchFormProps) {
             <Input
             placeholder="Location"
             className="pl-9 border-0 shadow-none font-normal"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
             />
         </div>
       </div>
