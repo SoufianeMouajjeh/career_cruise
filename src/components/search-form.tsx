@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { MapPin, Search } from 'lucide-react'
 import { useState } from 'react'
+import '../index.css'
 
 interface SearchFormProps {
   onSearch: (query: string, country: string) => void;
@@ -27,14 +28,14 @@ export function SearchForm({ onSearch }: SearchFormProps) {
             placeholder="Job title or keyword"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="pl-9 border-0 shadow-none border-r-[1px] font-normal"
+            className="pl-9 border-0 shadow-none border-r-[1px] font-normal placeholder-customGray custom-placeholder"
             />
         </div>
         <div className="relative flex-1">
             <MapPin className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
             placeholder="Location"
-            className="pl-9 border-0 shadow-none font-normal"
+            className="pl-9 border-0 shadow-none font-normal custom-placeholder"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
             />

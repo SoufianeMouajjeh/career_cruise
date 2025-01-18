@@ -14,3 +14,7 @@
     @apply flex animate-infinite-scroll items-center justify-center md:justify-start [&_img]:max-w-none [&_li]:mx-4;
   }
 }
+
+.custom-placeholder::placeholder {
+  color: #b0b0b0 !important;
+}
