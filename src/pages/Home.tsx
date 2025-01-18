@@ -75,7 +75,7 @@ export default function Home() {
           query,
           country,
           page: '1',
-          num_pages: '1',
+          num_pages: '20',
           date_posted: 'all'
         },
         headers: {
