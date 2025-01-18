@@ -1,4 +1,4 @@
-import { Building2, Clock, Globe2, BookmarkPlus, Share2 } from 'lucide-react'
+import { Building2, Clock, Globe2 } from 'lucide-react'
 import { Job } from '@/types'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -66,21 +66,7 @@ export function JobCard({ job }: { job: Job }) {
     console.log('View details clicked for:', job_title)
   }
 
-  const handleShare = () => {
-    // Implement share logic
-    if (navigator.share) {
-      navigator.share({
-        title: job_title,
-        text: `${job_title} at ${employer_name}`,
-        url: window.location.href,
-      }).catch(console.error)
-    }
-  }
 
-  const handleBookmark = () => {
-    // Implement bookmark logic
-    console.log('Bookmark clicked for:', job_title)
-  }
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 hover:border-[#7047EB]">
@@ -120,27 +106,6 @@ export function JobCard({ job }: { job: Job }) {
                 </div>
               </div>
             </div>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-8 w-8 text-gray-500 hover:text-primary"
-              onClick={handleBookmark}
-              title="Bookmark job"
-            >
-              <BookmarkPlus className="h-4 w-4" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="h-8 w-8 text-gray-500 hover:text-primary"
-              onClick={handleShare}
-              title="Share job"
-            >
-              <Share2 className="h-4 w-4" />
-            </Button>
           </div>
         </div>
 
