@@ -6,6 +6,7 @@ import axios from "axios"
 import { Job } from "@/types"
 import { useEffect, useState } from "react"
 import { Pagination } from '@/components/Pagination'
+import JobCardSkeleton from "@/components/jobcardskeleton"
 
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([])
@@ -39,7 +40,7 @@ export default function Home() {
             date_posted: 'all'
           },
           headers: {
-            'x-rapidapi-key': 'd42988c1ddmsh6fb6f128db749e8p1654c6jsn859ebb525141',
+            'x-rapidapi-key': '343ed8d04cmsh4a1cbdaf1466019p137896jsn8e89ee33e16c',
             'x-rapidapi-host': 'jsearch.p.rapidapi.com'
           }
         })
@@ -79,7 +80,7 @@ export default function Home() {
           date_posted: 'all'
         },
         headers: {
-          'x-rapidapi-key': 'd42988c1ddmsh6fb6f128db749e8p1654c6jsn859ebb525141',
+          'x-rapidapi-key': '343ed8d04cmsh4a1cbdaf1466019p137896jsn8e89ee33e16c',
           'x-rapidapi-host': 'jsearch.p.rapidapi.com'
         }
       })
@@ -149,7 +150,15 @@ export default function Home() {
         </div>
 
         {isLoading ? (
-          <div className="text-center py-8">Loading jobs...</div>
+          <div className="space-y-6">
+            <JobCardSkeleton />
+            <JobCardSkeleton />
+            <JobCardSkeleton />
+            <JobCardSkeleton />
+            <JobCardSkeleton />
+            <JobCardSkeleton />
+            <JobCardSkeleton />
+          </div>
         ) : error ? (
           <div className="text-center text-red-500 py-8">{error}</div>
         ) : jobs.length === 0 ? (

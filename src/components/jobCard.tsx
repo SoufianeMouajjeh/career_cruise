@@ -91,7 +91,7 @@ export function JobCard({ job }: { job: Job }) {
                 </div>
             </div>
             <div>
-              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+              <h3 className="font-semibold text-md group-hover:text-primary transition-colors">
                 {job_title || 'Position Not Specified'}
               </h3>
               <div className="flex items-center space-x-3 text-sm text-gray-500 mt-1">
