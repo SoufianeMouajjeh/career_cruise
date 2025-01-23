@@ -17,7 +17,7 @@ interface PaginationProps {
 
 export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
   const pageNumbers = []
-
+  
   for (let i = 1; i <= totalPages; i++) {
     if (
       i === 1 ||
@@ -33,6 +33,15 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
     }
   }
 
+  const handlePageChange = (page: number) => {
+    onPageChange(page);
+    // Smooth scroll to top of the page
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
   return (
     <ShadcnPagination>
       <PaginationContent>
@@ -42,7 +51,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             href="#"
             onClick={(e) => {
               e.preventDefault()
-              if (currentPage > 1) onPageChange(currentPage - 1)
+              if (currentPage > 1) handlePageChange(currentPage - 1)
             }}
           />
         </PaginationItem>
@@ -59,7 +68,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
                 isActive={currentPage === number}
                 onClick={(e) => {
                   e.preventDefault()
-                  onPageChange(number)
+                  handlePageChange(number)
                 }}
               >
                 {number}
@@ -73,7 +82,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             href="#"
             onClick={(e) => {
               e.preventDefault()
-              if (currentPage < totalPages) onPageChange(currentPage + 1)
+              if (currentPage < totalPages) handlePageChange(currentPage + 1)
             }}
           />
         </PaginationItem>
@@ -81,4 +90,3 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
     </ShadcnPagination>
   )
 }
-

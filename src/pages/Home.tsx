@@ -35,12 +35,12 @@ export default function Home() {
           params: {
             query: activeTab === 'all' ? 'developer' : activeTab,
             page: '1',
-            num_pages: '20',
+            num_pages: '5',
             country: 'us',
             date_posted: 'all'
           },
           headers: {
-            'x-rapidapi-key': '343ed8d04cmsh4a1cbdaf1466019p137896jsn8e89ee33e16c',
+            'x-rapidapi-key': 'd4b321252fmsh22180c84948569fp10011fjsn8b68e44f4f85',
             'x-rapidapi-host': 'jsearch.p.rapidapi.com'
           }
         })
@@ -76,11 +76,11 @@ export default function Home() {
           query,
           country,
           page: '1',
-          num_pages: '20',
+          num_pages: '5',
           date_posted: 'all'
         },
         headers: {
-          'x-rapidapi-key': '343ed8d04cmsh4a1cbdaf1466019p137896jsn8e89ee33e16c',
+          'x-rapidapi-key': 'd4b321252fmsh22180c84948569fp10011fjsn8b68e44f4f85',
           'x-rapidapi-host': 'jsearch.p.rapidapi.com'
         }
       })
