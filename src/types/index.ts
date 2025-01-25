@@ -1,6 +1,7 @@
 export interface JobSearchResponse {
   data: Job[];
   status: string;
+  onClose: () => void;
 }
 
 export interface Job {
@@ -16,5 +17,8 @@ export interface Job {
   job_salary?: string;
   job_posted_at: string;
   job_min_salary?: string;
+  Qualifications: string[];
+  Responsibilities: string[];
+  onClose: () => void;
 }
 

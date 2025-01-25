@@ -9,6 +9,8 @@ import {
 import { cn } from '@/lib/utils'
 
 
+
+
 export function JobCard({ job }: { job: Job }) {
   const {
     employer_logo,
@@ -60,12 +62,6 @@ export function JobCard({ job }: { job: Job }) {
     // Implement quick apply logic
     console.log('Quick apply clicked for:', job_title)
   }
-
-  const handleViewDetails = () => {
-    // Implement view details logic
-    console.log('View details clicked for:', job_title)
-  }
-
 
 
   return (
@@ -156,13 +152,6 @@ export function JobCard({ job }: { job: Job }) {
                 Quick Apply
               </Button>
             </a>
-            <Button 
-              variant="outline" 
-              className="shadow-sm bg-[#7047EB] text-white hover:text-slate-950 rounded"
-              onClick={handleViewDetails}
-            >
-              View Details
-            </Button>
           </div>
         </div>
       </CardContent>
