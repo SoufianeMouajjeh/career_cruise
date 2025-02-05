@@ -40,7 +40,7 @@ export default function Home() {
             date_posted: 'all'
           },
           headers: {
-            'x-rapidapi-key': 'd4b321252fmsh22180c84948569fp10011fjsn8b68e44f4f85',
+            'x-rapidapi-key': 'e64e31241emsh3411f1fac628037p190362jsn6d949b5eb129',
             'x-rapidapi-host': 'jsearch.p.rapidapi.com'
           }
         })
@@ -80,7 +80,7 @@ export default function Home() {
           date_posted: 'all'
         },
         headers: {
-          'x-rapidapi-key': 'd4b321252fmsh22180c84948569fp10011fjsn8b68e44f4f85',
+          'x-rapidapi-key': 'e64e31241emsh3411f1fac628037p190362jsn6d949b5eb129',
           'x-rapidapi-host': 'jsearch.p.rapidapi.com'
         }
       })
