@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { Pagination } from '@/components/Pagination'
 import JobCardSkeleton from "@/components/jobcardskeleton"
 
+
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([])
   const [isLoading, setIsLoading] = useState(true)

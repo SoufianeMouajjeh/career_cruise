@@ -3,6 +3,7 @@ import { Header } from './components/Header'
 import Home from './pages/Home'
 import Map from './pages/Map'
 import Jobs from './pages/Jobs'
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path='/' element={<Jobs />} />
         <Route path='/Map' element={<Map />} />
       </Routes>
+      <Analytics/>
     </div>
   )
 }
