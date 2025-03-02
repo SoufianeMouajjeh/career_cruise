@@ -21,4 +21,3 @@ export interface Job {
   Responsibilities: string[];
   onClose: () => void;
 }
-
