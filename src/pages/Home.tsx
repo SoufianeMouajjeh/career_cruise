@@ -4,7 +4,7 @@ import { JobCard } from '@/components/jobCard'
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import axios from "axios"
 import { Job } from "@/types"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Pagination } from '@/components/Pagination'
 import JobCardSkeleton from "@/components/jobcardskeleton"
 
@@ -15,28 +15,23 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState('all')
   const [currentPage, setCurrentPage] = useState(1)
-  const jobsPerPage = 15
-
-  const indexOfLastJob = currentPage * jobsPerPage
-  const indexOfFirstJob = indexOfLastJob - jobsPerPage
-  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob)
-
-  const totalPages = Math.ceil(jobs.length / jobsPerPage)
+  const [totalPages, setTotalPages] = useState(1)
+  const jobsPerPage = 10
+  const jobsSectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         setIsLoading(true)
         setError(null)
-        setCurrentPage(1)
         
         const response = await axios.request({
           method: 'GET',
           url: 'https://jsearch.p.rapidapi.com/search',
           params: {
             query: activeTab === 'all' ? 'developer' : activeTab,
-            page: '1',
-            num_pages: '5',
+            page: currentPage.toString(),
+            num_pages: '1',
             country: 'us',
             date_posted: 'all'
           },
@@ -50,7 +45,11 @@ export default function Home() {
         const jobsData = response?.data?.data || []
         
         // Initialize as empty array if data is not an array
-        setJobs(Array.isArray(jobsData) ? jobsData : [])
+        setJobs(Array.isArray(jobsData) ? jobsData.slice(0, jobsPerPage) : [])
+        
+        // Calculate total pages based on API response (assuming 100+ jobs available)
+        // Since the API doesn't return total count, we'll set a reasonable max
+        setTotalPages(10) // Limiting to 10 pages (100 jobs total)
         
       } catch (error) {
         console.error('Error fetching jobs:', error)
@@ -62,6 +61,11 @@ export default function Home() {
     }
 
     fetchJobs()
+  }, [activeTab, currentPage])
+
+  // Reset to page 1 when tab changes
+  useEffect(() => {
+    setCurrentPage(1)
   }, [activeTab])
 
   const handleSearch = async (query: string, country: string) => {
@@ -77,7 +81,7 @@ export default function Home() {
           query,
           country,
           page: '1',
-          num_pages: '5',
+          num_pages: '1',
           date_posted: 'all'
         },
         headers: {
@@ -87,7 +91,8 @@ export default function Home() {
       })
 
       const jobsData = response?.data?.data || []
-      setJobs(Array.isArray(jobsData) ? jobsData : [])
+      setJobs(Array.isArray(jobsData) ? jobsData.slice(0, jobsPerPage) : [])
+      setTotalPages(10) // Set reasonable max pages
       
     } catch (error) {
       console.error('Error fetching jobs:', error)
@@ -98,7 +103,12 @@ export default function Home() {
     }
   }
 
-  // Function to handle page change for pagination
+  // Handle page change with smooth scroll
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    // Scroll to jobs section smoothly
+    jobsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   return (
     <main className="flex-1">
@@ -117,7 +127,7 @@ export default function Home() {
         </div>
       </section>
       
-      <section className="container px-4 mx-auto py-8">
+      <section ref={jobsSectionRef} className="container px-4 mx-auto py-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <h2 className="text-3xl font-bold">Latest Jobs</h2>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -166,14 +176,14 @@ export default function Home() {
           <div className="text-center py-8">No jobs found</div>
         ) : (
           <div className="space-y-6">
-            {currentJobs.map((job: Job) => (
+            {jobs.map((job: Job) => (
               <JobCard key={job.job_id} job={job} />
             ))}
             <Pagination
               className="mt-8"
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              onPageChange={handlePageChange}
             />
           </div>
         

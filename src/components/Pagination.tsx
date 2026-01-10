@@ -35,11 +35,6 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
 
   const handlePageChange = (page: number) => {
     onPageChange(page);
-    // Smooth scroll to top of the page
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
   }
 
   return (
