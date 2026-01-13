@@ -11,8 +11,8 @@ const options = {
     date_posted: 'all'
   },
   headers: {
-    'x-rapidapi-key': '0e7887b9c7mshfdcad615dd78db1p134c69jsn0fd8a04357e1',
-    'x-rapidapi-host': 'jsearch.p.rapidapi.com'
+    'x-rapidapi-key': process.env.RAPID_API_KEY,
+    'x-rapidapi-host': process.env.RAPID_API_HOST
   }
 };
 
