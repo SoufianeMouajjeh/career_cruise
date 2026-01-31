@@ -1,4 +1,7 @@
-export function Company(){
+import React from 'react'
+
+// Memoized to prevent re-renders since this component renders static content
+export const Company = React.memo(function Company(){
     return(
         <div className="inline-flex w-full flex-nowrap overflow-hidden bg-white [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)] mb-8 py-2">
             <ul className="brands-wrapper">
@@ -29,4 +32,6 @@ export function Company(){
             </ul>
         </div>
     )
-}
+})
+
+Company.displayName = 'Company'

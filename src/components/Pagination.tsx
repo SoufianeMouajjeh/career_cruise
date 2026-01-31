@@ -1,3 +1,4 @@
+import React, { useMemo, useCallback } from 'react'
 import {
   Pagination as ShadcnPagination,
   PaginationContent,
@@ -15,27 +16,32 @@ interface PaginationProps {
   className?: string;
 }
 
-export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
-  const pageNumbers = []
-  
-  for (let i = 1; i <= totalPages; i++) {
-    if (
-      i === 1 ||
-      i === totalPages ||
-      (i >= currentPage - 1 && i <= currentPage + 1)
-    ) {
-      pageNumbers.push(i)
-    } else if (
-      (i === currentPage - 2 && currentPage > 3) ||
-      (i === currentPage + 2 && currentPage < totalPages - 2)
-    ) {
-      pageNumbers.push(null)
+export const Pagination = React.memo(function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+  // Memoize pageNumbers array to prevent recreation on every render
+  const pageNumbers = useMemo(() => {
+    const numbers: (number | null)[] = []
+    
+    for (let i = 1; i <= totalPages; i++) {
+      if (
+        i === 1 ||
+        i === totalPages ||
+        (i >= currentPage - 1 && i <= currentPage + 1)
+      ) {
+        numbers.push(i)
+      } else if (
+        (i === currentPage - 2 && currentPage > 3) ||
+        (i === currentPage + 2 && currentPage < totalPages - 2)
+      ) {
+        numbers.push(null)
+      }
     }
-  }
+    return numbers
+  }, [currentPage, totalPages])
 
-  const handlePageChange = (page: number) => {
+  // Memoize handler to prevent recreation on every render
+  const handlePageChange = useCallback((page: number) => {
     onPageChange(page);
-  }
+  }, [onPageChange])
 
   return (
     <ShadcnPagination>
@@ -84,4 +90,6 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       </PaginationContent>
     </ShadcnPagination>
   )
-}
+})
+
+Pagination.displayName = 'Pagination'

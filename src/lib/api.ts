@@ -1,24 +1,40 @@
 import axios from 'axios';
 
-const options = {
-  method: 'GET',
-  url: 'https://jsearch.p.rapidapi.com/search',
-  params: {
-    query: 'developer',
-    page: '1',
-    num_pages: '1',
-    country: 'us',
-    date_posted: 'all'
-  },
-  headers: {
-    'x-rapidapi-key': process.env.RAPID_API_KEY,
-    'x-rapidapi-host': process.env.RAPID_API_HOST
-  }
-};
+const RAPID_API_KEY = import.meta.env.VITE_RAPID_API_KEY;
+const RAPID_API_HOST = import.meta.env.VITE_RAPID_API_HOST || 'jsearch.p.rapidapi.com';
 
-try {
-	const response = await axios.request(options);
-	console.log(response.data);
-} catch (error) {
-	console.error(error);
+interface SearchJobsParams {
+  query: string;
+  page?: number;
+  country?: string;
+  datePosted?: string;
 }
+
+/**
+ * Reusable function to search for jobs
+ * Extracts duplicate API call logic into a single location
+ */
+export const searchJobs = async ({ 
+  query, 
+  page = 1, 
+  country = 'us', 
+  datePosted = 'all' 
+}: SearchJobsParams) => {
+  const response = await axios.request({
+    method: 'GET',
+    url: 'https://jsearch.p.rapidapi.com/search',
+    params: {
+      query,
+      page: page.toString(),
+      num_pages: '1',
+      country,
+      date_posted: datePosted
+    },
+    headers: {
+      'x-rapidapi-key': RAPID_API_KEY,
+      'x-rapidapi-host': RAPID_API_HOST
+    }
+  });
+
+  return response.data;
+};
