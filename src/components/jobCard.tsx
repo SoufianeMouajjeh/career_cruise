@@ -58,8 +58,9 @@ export const JobCard = React.memo(function JobCard({ job }: { job: Job }) {
   const formattedDate = job_posted_at || 'Not specified'
 
   const handleQuickApply = useCallback(() => {
-    // Implement quick apply logic
-  }, [])
+    // Implement quick apply logic here
+    // Access job_title, job_apply_link, etc. as needed
+  }, [job_title, job_apply_link])
 
 
   return (

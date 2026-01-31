@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const RAPID_API_KEY = import.meta.env.VITE_RAPID_API_KEY || 'e64e31241emsh3411f1fac628037p190362jsn6d949b5eb129';
+const RAPID_API_KEY = import.meta.env.VITE_RAPID_API_KEY;
 const RAPID_API_HOST = import.meta.env.VITE_RAPID_API_HOST || 'jsearch.p.rapidapi.com';
 
 interface SearchJobsParams {
