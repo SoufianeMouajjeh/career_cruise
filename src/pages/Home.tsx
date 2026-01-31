@@ -2,11 +2,11 @@ import { Company } from "@/components/company"
 import { SearchForm } from "../components/search-form"
 import { JobCard } from '@/components/jobCard'
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import axios from "axios"
 import { Job } from "@/types"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import { Pagination } from '@/components/Pagination'
 import JobCardSkeleton from "@/components/jobcardskeleton"
+import { searchJobs } from "@/lib/api"
 
 
 export default function Home() {
@@ -25,24 +25,14 @@ export default function Home() {
         setIsLoading(true)
         setError(null)
         
-        const response = await axios.request({
-          method: 'GET',
-          url: 'https://jsearch.p.rapidapi.com/search',
-          params: {
-            query: activeTab === 'all' ? 'developer' : activeTab,
-            page: currentPage.toString(),
-            num_pages: '1',
-            country: 'us',
-            date_posted: 'all'
-          },
-          headers: {
-            'x-rapidapi-key': 'e64e31241emsh3411f1fac628037p190362jsn6d949b5eb129',
-            'x-rapidapi-host': 'jsearch.p.rapidapi.com'
-          }
+        const response = await searchJobs({
+          query: activeTab === 'all' ? 'developer' : activeTab,
+          page: currentPage,
+          country: 'us'
         })
 
         // Access the data property from the response
-        const jobsData = response?.data?.data || []
+        const jobsData = response?.data || []
         
         // Initialize as empty array if data is not an array
         setJobs(Array.isArray(jobsData) ? jobsData.slice(0, jobsPerPage) : [])
@@ -68,29 +58,19 @@ export default function Home() {
     setCurrentPage(1)
   }, [activeTab])
 
-  const handleSearch = async (query: string, country: string) => {
+  const handleSearch = useCallback(async (query: string, country: string) => {
     try {
       setIsLoading(true)
       setError(null)
       setCurrentPage(1)
       
-      const response = await axios.request({
-        method: 'GET',
-        url: 'https://jsearch.p.rapidapi.com/search',
-        params: {
-          query,
-          country,
-          page: '1',
-          num_pages: '1',
-          date_posted: 'all'
-        },
-        headers: {
-          'x-rapidapi-key': 'e64e31241emsh3411f1fac628037p190362jsn6d949b5eb129',
-          'x-rapidapi-host': 'jsearch.p.rapidapi.com'
-        }
+      const response = await searchJobs({
+        query,
+        page: 1,
+        country
       })
 
-      const jobsData = response?.data?.data || []
+      const jobsData = response?.data || []
       setJobs(Array.isArray(jobsData) ? jobsData.slice(0, jobsPerPage) : [])
       setTotalPages(10) // Set reasonable max pages
       
@@ -101,14 +81,14 @@ export default function Home() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [jobsPerPage])
 
-  // Handle page change with smooth scroll
-  const handlePageChange = (page: number) => {
+  // Handle page change with smooth scroll - memoized for performance
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page)
     // Scroll to jobs section smoothly
     jobsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  }, [])
 
   return (
     <main className="flex-1">
@@ -162,13 +142,9 @@ export default function Home() {
 
         {isLoading ? (
           <div className="space-y-6">
-            <JobCardSkeleton />
-            <JobCardSkeleton />
-            <JobCardSkeleton />
-            <JobCardSkeleton />
-            <JobCardSkeleton />
-            <JobCardSkeleton />
-            <JobCardSkeleton />
+            {[...Array(7)].map((_, index) => (
+              <JobCardSkeleton key={`skeleton-${index}`} />
+            ))}
           </div>
         ) : error ? (
           <div className="text-center text-red-500 py-8">{error}</div>

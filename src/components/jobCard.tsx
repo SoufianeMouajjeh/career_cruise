@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react'
 import { Building2, Clock, Globe2 } from 'lucide-react'
 import { Job } from '@/types'
 import { Button } from "@/components/ui/button"
@@ -8,10 +9,32 @@ import {
 } from "@/components/ui/card"
 import { cn } from '@/lib/utils'
 
+// Extracted outside component to prevent recreation on each render
+const DefaultLogo = React.memo(() => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 56 56" 
+    className="h-14 w-14 rounded-xl bg-[#7047EB]"
+  >
+    <rect width="56" height="56" fill="#7047EB"/>
+    <text
+      x="28"
+      y="35"
+      fontFamily="Arial, sans-serif"
+      fontSize="20"
+      fontWeight="bold"
+      fill="white"
+      textAnchor="middle"
+      dominantBaseline="middle"
+    >
+      JOB
+    </text>
+  </svg>
+))
 
+DefaultLogo.displayName = 'DefaultLogo'
 
-
-export function JobCard({ job }: { job: Job }) {
+export const JobCard = React.memo(function JobCard({ job }: { job: Job }) {
   const {
     employer_logo,
     employer_name,
@@ -22,30 +45,6 @@ export function JobCard({ job }: { job: Job }) {
     job_posted_at,
     job_apply_link,
   } = job
-  console.log(job)
-
-  // Placeholder image for missing logos
-  const DefaultLogo = () => (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 56 56" 
-      className="h-14 w-14 rounded-xl bg-[#7047EB]"
-    >
-      <rect width="56" height="56" fill="#7047EB"/>
-      <text
-        x="28"
-        y="35"
-        fontFamily="Arial, sans-serif"
-        fontSize="20"
-        fontWeight="bold"
-        fill="white"
-        textAnchor="middle"
-        dominantBaseline="middle"
-      >
-        JOB
-      </text>
-    </svg>
-  );
   // Format employment type
   const employmentType = job_employment_type || 'Not specified'
 
@@ -58,10 +57,9 @@ export function JobCard({ job }: { job: Job }) {
   // Format posting date
   const formattedDate = job_posted_at || 'Not specified'
 
-  const handleQuickApply = () => {
+  const handleQuickApply = useCallback(() => {
     // Implement quick apply logic
-    console.log('Quick apply clicked for:', job_title)
-  }
+  }, [])
 
 
   return (
@@ -157,4 +155,6 @@ export function JobCard({ job }: { job: Job }) {
       </CardContent>
     </Card>
   )
-}
+})
+
+JobCard.displayName = 'JobCard'
